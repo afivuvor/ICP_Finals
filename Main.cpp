@@ -12,10 +12,10 @@
 #include <queue>
 using namespace std;
 
-map<string,vector<Airlines>> airlinesMap = *new map<string, vector<Airlines>>;
-map<string,vector<Routes>> routesMap = *new map<string, vector<Routes>>;
-map<string,Routes> airlineMap = *new map<string, Routes>;
-map<string,vector<Airports>> airportsMap = *new map<string, vector<Airports>>;
+map<string,vector<Airlines>> Airlines::airlinesMap = *new map<string, vector<Airlines>>;
+map<string,vector<Routes>> Routes::routesMap = *new map<string, vector<Routes>>;
+map<string,Routes> Routes::airlineMap = *new map<string, Routes>;
+map<string,vector<Airports>> Airports::airportsMap = *new map<string, vector<Airports>>;
 map<string, string> sol_path;
 deque<string> frontier;
 vector<string> mylist;
@@ -74,19 +74,19 @@ void csvReader(string myFile) {
         line1 = mylist[0] + "," +mylist[1];
         line2 = mylist[2] + ","+ mylist[3];
 
-        if(airportsMap.find(line2)!= airportsMap.end()) {
-            for (int i = 0; i<airportsMap[line2].size(); i++) {
-                iata2 = airportsMap[line2].at(i).IATA;
+        if(Airports::airportsMap.find(line2)!= Airports::airportsMap.end()) {
+            for (int i = 0; i<Airports::airportsMap[line2].size(); i++) {
+                iata2 = Airports::airportsMap[line2].at(i).IATA;
                 if (iata2 == "\\N") {
                     continue;}
             }}
         else{
             cout<<"sorry could not find it"<< endl;
         }
-        if(airportsMap.find(line1)!= airportsMap.end()) {
+        if(Airports::airportsMap.find(line1)!= Airports::airportsMap.end()) {
 
-            for (int i = 0; i<airportsMap[line1].size(); i++){
-                iata = airportsMap[line1].at(i).IATA;
+            for (int i = 0; i<Airports::airportsMap[line1].size(); i++){
+                iata = Airports::airportsMap[line1].at(i).IATA;
                 if(iata == "\\N"){
 
                     continue;}
@@ -116,7 +116,7 @@ void findCode(string start_iata){
     vector<string> explored;
     /*Check if the AITA code passed as a parameter can be found as a key in the Routes hashmap  */
 
-    if (routesMap.find(start_iata)!= routesMap.end()){
+    if (Routes::routesMap.find(start_iata)!= Routes::routesMap.end()){
         if(start_iata==iata2){
             cout<<"You have reached your destination"<<endl;
         }else{
@@ -128,13 +128,13 @@ void findCode(string start_iata){
             removed_code=frontier.front();
             frontier.pop_front();
             explored.push_back(removed_code);
-            if (routesMap.find(removed_code)!= routesMap.end()){
+            if (Routes::routesMap.find(removed_code)!= Routes::routesMap.end()){
 
 
-                int number2 = routesMap[removed_code].size();
+                int number2 = Routes::routesMap[removed_code].size();
 
                 for(int j =0; j<number2; j++){
-                    child = routesMap[removed_code].at(j).destAirportCode;
+                    child = Routes::routesMap[removed_code].at(j).destAirportCode;
 
                     if((find(explored.begin(), explored.end(), child) == explored.end()) && \
                      (find(frontier.begin(), frontier.end(), child) == frontier.end())){
@@ -176,9 +176,9 @@ vector<string> correctpath(string endpoint){
 
     for (int i = 0; i< answer.size()-1; i++){
         string mykey = answer.at(i) + ", "+ answer.at(i+1);
-        if (airlineMap.find(mykey)!= airlineMap.end()){
+        if (Routes::airlineMap.find(mykey)!= Routes::airlineMap.end()){
 
-            air = airlineMap.at(mykey).airlineCode;
+            air = Routes::airlineMap.at(mykey).airlineCode;
             airlines.push_back(air);
         }
     }
@@ -202,7 +202,8 @@ void outputFile(){
             start ++;
         }
     }
-    output<< "Total flights: "<< answer.size()-1<<endl;
+    output<< "Total flights: "<< answer.size()<<endl;
     output<< "Total additional stops: 0"<<endl;
     output<<"Optimality criteria: flights"<< endl;
     output.close();}
+
