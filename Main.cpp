@@ -42,15 +42,6 @@ int main() {
 
     return 0;
 }
-/**
- *This method reads the user input file and determines the start and end destination
- * It calls the 'findcode' method to provide a route that links the start location
- * to the end destination
- * @Precondition
- * the file must exist
- * @param myFile
- * @return none
- */
 
 void csvReader(string myFile) {
     ifstream file;
@@ -104,17 +95,9 @@ void csvReader(string myFile) {
     file.close();
 }
 
-/**
- * This method uses the breadth-first search algorithm to find the optimal path from the
- * start location to end destination
- *
- * @param start_iata
- * This resource was obtained from Doctor Ayorkor Korsah's Implementation of BFS algorithm
- * This method automatically finds the optimal solution
- */
+
 void findCode(string start_iata){
     vector<string> explored;
-    /*Check if the AITA code passed as a parameter can be found as a key in the Routes hashmap  */
 
     if (Routes::routesMap.find(start_iata)!= Routes::routesMap.end()){
         if(start_iata==iata2){
@@ -123,7 +106,7 @@ void findCode(string start_iata){
             frontier.push_back(start_iata);
         }
 
-        /* This loop will run until the frontier is empty */
+        
         while(frontier.size() >0){
             removed_code=frontier.front();
             frontier.pop_front();
@@ -157,13 +140,7 @@ void findCode(string start_iata){
 }
 
 
-/**
- *This method  returns a series of flights and their respective airports from the start location to the end
- * @Precontion:
- * variable' sol_path' should not be empty
- * @param endpoint the end destination of the user
- * @return answer
- */
+
 vector<string> correctpath(string endpoint){
     answer.push_back((endpoint));
     string ending = endpoint;
@@ -185,12 +162,7 @@ vector<string> correctpath(string endpoint){
     return answer;
 }
 
-/**
- * This method writes out the path to a file
- * @Precondition:
- * variable 'answer' must not be null
- *
- */
+
 void outputFile(){
     int pos = file_name.find(".txt");
     string sub = file_name.substr(0,pos);
